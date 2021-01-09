@@ -6,16 +6,10 @@
 <head>
 <meta charset="utf-8">
 <title>deptEmptList</title>
-<style>
-	#btnMenu{
-		padding:10px 20px;
-		background-color:white; font-size:20px;
-		}
-	#btnPage{
-		padding:7px 10px;
-		 font-size:20px;
-	}
-</style>
+<!-- boot strap 4 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
 </head>
 <body>
 	
@@ -79,7 +73,7 @@
 					stmt.setInt(2, rowPage);
 					sql2 = "select count(*) as cnt from dept_emp";
 					stmt2 = conn.prepareStatement(sql2);
-					address = "./deptEmpList.jsp?deptOption=off&deptName=전체&";					
+					address = "/deptEmpList.jsp?deptOption=off&deptName=전체&";					
 				}
 				// 한 부서 선택일 경우
 				else{
@@ -91,7 +85,7 @@
 					sql2 = "select count(*) as cnt from dept_emp where dept_no = ?";
 					stmt2 = conn.prepareStatement(sql2);
 					stmt2.setString(1, deptName);
-					address = "./deptEmpList.jsp?deptOption=off&deptName=" + deptName + "&";			
+					address = "/deptEmpList.jsp?deptOption=off&deptName=" + deptName + "&";			
 				}	
 			// 근무중인 사람 출력
 			}else{
@@ -103,7 +97,7 @@
 					stmt.setInt(2, rowPage);
 					sql2 = "select count(*) as cnt from dept_emp where to_date = '9999-01-01'";
 					stmt2 = conn.prepareStatement(sql2);
-					address = "./deptEmpList.jsp?deptOption=on&deptName=전체&";				
+					address = "/deptEmpList.jsp?deptOption=on&deptName=전체&";				
 				}
 				// 한 부서
 				else{
@@ -115,7 +109,7 @@
 					sql2 = "select count(*) as cnt from dept_emp where to_date = '9999-01-01' and dept_no = ?";
 					stmt2 = conn.prepareStatement(sql2);
 					stmt2.setString(1, deptName);
-					address = "./deptEmpList.jsp?deptOption=on&deptName=" + deptName + "&";					
+					address = "/deptEmpList.jsp?deptOption=on&deptName=" + deptName + "&";					
 				}
 			}
 			
@@ -132,105 +126,160 @@
 			}
 			
 		%>
-		<!-- 메뉴 -->
-		<button id="btnMenu" type="button" onclick="location.href='./index.jsp'">HOME</button>
-		<button id="btnMenu" type="button" onclick="location.href='./employeesList.jsp?currentPage=1'">employeesList</button>
-		<button id="btnMenu" type="button" onclick="location.href='./departmentsList.jsp?currentPage=1'">departmentList</button>
-		<button id="btnMenu" type="button" onclick="location.href='./deptEmpList.jsp?currentPage=1'">deptEmpList</button>
-		<button id="btnMenu" type="button" onclick="location.href='./deptManagerList.jsp?currentPage=1'">deptManagerList</button>
-		<button id="btnMenu" type="button" onclick="location.href='./salariesList.jsp?currentPage=1'">salariesList</button>
-		<button id="btnMenu" type="button" onclick="location.href='./titlesList.jsp?currentPage=1'">titlesList</button>
-		
-		<h1>deptEmp 테이블 목록</h1>
-		<table border="1">
-			<thead>
-				<tr>
-					<th>emp_no</th>
-					<th>dept_no</th>
-					<th>from_date</th>
-					<th>to_date</th>
-				</tr>
-			</thead>
-			<tbody>
-		<%
-			while(rs.next()){
-		%>
-				<tr>
-					<td><%=rs.getString("emp_no") %></td>
-					<td><%=rs.getString("dept_no") %></td>
-					<td><%=rs.getString("from_date") %></td>
-					<td><%=rs.getString("to_date") %></td>
-				</tr>
-		<%
-			}
-		%>
-			</tbody>
-		</table>
-		
-	
-	</div>
-	<!-- 페이징 버튼 -->
-	<div>
-		<%
-			if(currentPage > 1) {
-		%>
-			<a href="<%=address%>currentPage=1">처음으로</a>	
-			<a href="<%=address%>currentPage=<%=currentPage -1 %>">이전</a>
-		<%
-			}
-		%>
-		<%
-			if(currentPage < cnt) {
-		%>
-			<a href="<%=address%>currentPage=<%=currentPage +1 %>">다음</a>
-			<a href="<%=address%>currentPage=<%=cnt %>">마지막으로</a>
-		<%
-			}
-		%>
-		
-	</div><br /><br />
-	
-	<!-- 조건 선택 -->
-	<%
-		String sql3 = "select dept_no from departments order by dept_no asc";
-		PreparedStatement stmt3 = conn.prepareStatement(sql3);
-		ResultSet rs3 = stmt3.executeQuery();
-		
-	%>
-	<div>
-		<form method="post" action="./deptEmpList.jsp">
+	<div class="container" style="background-color:white">
+		<!-- Top Menu -->
+		<div class="">
 			<div>
-				<input type="checkbox" name="deptOption"
-				<%
-					if(deptOption){
-				%>
-					checked="checked"
-				<%
-					}
-				%>
-				>
-				재직중
-				<select name="deptName">
-					<option>전체</option>
-					<%
-					while(rs3.next()){
-					%>
-						<option
-						<%
-							if(deptName.equals(rs3.getString("dept_no"))){
-						%>
-							selected="selected"
-						<%
-							}
-						%>
-						><%=rs3.getString("dept_no") %></option>
-					<%
-					}
-					%>
-				</select>
+				<nav class="navbar navbar-expand-sm bg-success navbar-dark">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">HOME</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/employeesList.jsp?currentPage=1">employeesList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/departmentsList.jsp?currentPage=1">departmentsList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link active" href="<%=request.getContextPath()%>/deptEmpList.jsp?currentPage=1">deptEmpList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/deptManagerList.jsp?currentPage=1">deptManagerList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/salariesList.jsp?currentPage=1">salariesList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/titlesList.jsp?currentPage=1">titlesList</a>
+						</li>
+					</ul>
+				</nav>
 			</div>
-			<button type="submit">검색</button>
-		</form>
+		</div>
+		<!-- Page Content -->
+		<div class="container mt-3">
+			<h1>
+				<span class="badge badge-pill badge-success" style="background-color:#59DA50">
+					DeptEmp List
+				</span>	
+			</h1>
+			<table class="table">
+				<thead style="background-color:#E0FFDB">
+					<tr>
+						<th>emp_no</th>
+						<th>dept_no</th>
+						<th>from_date</th>
+						<th>to_date</th>
+					</tr>
+				</thead>
+				<tbody>
+				<%
+					while(rs.next()){
+				%>
+						<tr>
+							<td><%=rs.getString("emp_no") %></td>
+							<td><%=rs.getString("dept_no") %></td>
+							<td><%=rs.getString("from_date") %></td>
+							<td><%=rs.getString("to_date") %></td>
+						</tr>
+				<%
+					}
+				%>
+				</tbody>
+			</table>
+			<br />
+			
+			<!-- 페이징 버튼 -->
+			<div>
+				<ul class="pagination">
+					<%
+						if(currentPage > 1) {
+					%>
+						<li class="page-item">
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%><%=address%>currentPage=1">처음으로</a>
+						</li>
+						<li class="page-item">
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%><%=address%>currentPage=<%=currentPage -1 %>">이전</a>
+						</li>
+					<%
+						}
+					%>
+					<%
+						if(currentPage < cnt) {
+					%>
+						<li class="page-item">
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%><%=address%>currentPage=<%=currentPage +1 %>">다음</a>
+						</li>
+						<li class="page-item">
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%><%=address%>currentPage=<%=cnt %>">마지막으로</a>
+						</li>
+					<%
+						}
+					%>
+					
+				</ul>
+			</div>
+		
+			<!-- 검색 옵션 -->
+			<!-- 조건 선택 -->
+			<%
+				String sql3 = "select dept_no from departments order by dept_no asc";
+				PreparedStatement stmt3 = conn.prepareStatement(sql3);
+				ResultSet rs3 = stmt3.executeQuery();
+				
+			%>
+			<div class="mt-3">
+				<form method="post" action="<%=request.getContextPath()%>/deptEmpList.jsp">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<div class="form-check">
+								<div class="checkbox">
+	  								<label>
+		  								<input type="checkbox" name="deptOption"
+										<%
+											if(deptOption){
+										%>
+											checked="checked"
+										<%
+											}
+										%>
+										>	
+									재직중
+	  								</label>
+								</div>
+							</div>
+						</div>
+						<div class="input-group-prepend ml-5">
+							<select class="form-control" name="deptName">
+								<option>==전체==</option>
+								<%
+								while(rs3.next()){
+								%>
+									<option
+									<%
+										if(deptName.equals(rs3.getString("dept_no"))){
+									%>
+										selected="selected"
+									<%
+										}
+									%>
+									><%=rs3.getString("dept_no") %></option>
+								<%
+								}
+								%>
+							</select>
+						</div>
+						<div class="input-group-prepend">
+							<button style="width:120px" type="submit" class="btn btn-outline-success">검색</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- footer -->
+		<div class="navbar navbar-expand-sm bg-success mt-5" style="height:50px">
+		</div>
 	</div>
 </body>
 </html>

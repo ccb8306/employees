@@ -6,16 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>employeeSearch</title>
-<style>
-	#btnMenu{
-		padding:10px 20px;
-		background-color:white; font-size:20px;
-		}
-	#btnPage{
-		padding:7px 10px;
-		 font-size:20px;
-	}
-</style>
+<!-- boot strap 4 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
 </head>
 <body>
 <%
@@ -78,7 +72,7 @@
 		stmt.setInt(2, rowPage);
 		sql2 = "SELECT count(*) as cnt FROM employees";
 		stmt2 = conn.prepareStatement(sql2);
-		address = "./employeesList.jsp?";
+		address = "/employeesList.jsp?";
 	// 2. gender o, first_name x, last_name x
 	} else if(!searchGender.equals("선택안함") && searchNameOption.equals("선택안함")){
 		sql = "select * from employees where gender=? limit ?, ?";
@@ -89,7 +83,7 @@
 		sql2 = "SELECT count(*) as cnt FROM employees where gender=?";
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, searchGender);
-		address = "./employeesList.jsp?searchGender=" + searchGender + "&";
+		address = "/employeesList.jsp?searchGender=" + searchGender + "&";
 	// 3. gender x, first_name o, last_name x
 	}else if(searchGender.equals("선택안함") && searchNameOption.equals("searchFirstName")){
 		sql = "select * from employees where first_name like ? limit ?, ?";
@@ -100,7 +94,7 @@
 		sql2 = "SELECT count(*) as cnt FROM employees where first_name like ?";
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, "%" + searchName + "");
-		address = "./employeesList.jsp?searchNameOption=" + searchNameOption + "&searchName=" + searchName + "&";
+		address = "/employeesList.jsp?searchNameOption=" + searchNameOption + "&searchName=" + searchName + "&";
 	// 4. gender x, first_name x, last_name o
 	}else if(searchGender.equals("선택안함") && searchNameOption.equals("searchLastName")){
 		sql = "select * from employees where last_name like ? limit ?, ?";
@@ -111,7 +105,7 @@
 		sql2 = "SELECT count(*) as cnt FROM employees where last_name like ?";
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, "%" + searchName + "");
-		address = "./employeesList.jsp?searchNameOption=" + searchNameOption + "&searchName=" + searchName + "&";
+		address = "/employeesList.jsp?searchNameOption=" + searchNameOption + "&searchName=" + searchName + "&";
 	// 5. gender x, first_name o, last_name o
 	}else if(searchGender.equals("선택안함") && searchNameOption.equals("searchFirstOrLast")){
 		sql = "select * from employees where first_name like ? or last_name like ? limit ?, ?";
@@ -124,7 +118,7 @@
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, "%" + searchName + "");
 		stmt2.setString(2, "%" + searchName + "");
-		address = "./employeesList.jsp?searchNameOption=" + searchNameOption + "&searchName=" + searchName + "&";
+		address = "/employeesList.jsp?searchNameOption=" + searchNameOption + "&searchName=" + searchName + "&";
 	// 6. gender o, first_name o, last_name x
 	}else if(!searchGender.equals("선택안함") && searchNameOption.equals("searchFirstName")){
 		sql = "select * from employees where gender = ? and first_name like ? limit ?, ?";
@@ -137,7 +131,7 @@
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, searchGender);
 		stmt2.setString(2, "%" + searchName + "");
-		address = "./employeesList.jsp?searchGender=" + searchGender + "&searchNameOption=" + searchNameOption +  "&searchName=" + searchName + "&";
+		address = "/employeesList.jsp?searchGender=" + searchGender + "&searchNameOption=" + searchNameOption +  "&searchName=" + searchName + "&";
 	// 7. gender o, first_name x, last_name o
 	}else if(!searchGender.equals("선택안함") && searchNameOption.equals("searchLastName")){
 		sql = "select * from employees where gender = ? and last_name like ? limit ?, ?";
@@ -150,7 +144,7 @@
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, searchGender);
 		stmt2.setString(2, "%" + searchName + "");
-		address = "./employeesList.jsp?searchGender=" + searchGender  + "&searchNameOption=" + searchNameOption + "&searchName=" + searchName + "&";
+		address = "/employeesList.jsp?searchGender=" + searchGender  + "&searchNameOption=" + searchNameOption + "&searchName=" + searchName + "&";
 	// 8. gender o, first_name o, last_name o
 	}else if(!searchGender.equals("선택안함") && searchNameOption.equals("searchFirstOrLast")){
 		sql = "select * from employees where gender = ? and (first_name like ? or last_name like ?) limit ?, ?";
@@ -165,7 +159,7 @@
 		stmt2.setString(1, searchGender);
 		stmt2.setString(2, "%" + searchName + "");
 		stmt2.setString(3, "%" + searchName + "");
-		address = "./employeesList.jsp?searchGender=" + searchGender + "&searchNameOption=" + searchNameOption + "&searchName=" + searchName + "&";
+		address = "/employeesList.jsp?searchGender=" + searchGender + "&searchNameOption=" + searchNameOption + "&searchName=" + searchName + "&";
 	}
 	
 	// 페이지 최대 개수 구하기
@@ -181,18 +175,46 @@
 	ResultSet rs = stmt.executeQuery();
 
 %>
-	<!-- 메뉴 -->
-	<button id="btnMenu" type="button" onclick="location.href='./index.jsp'">HOME</button>
-	<button id="btnMenu" type="button" onclick="location.href='./employeesList.jsp?currentPage=1'">employeesList</button>
-	<button id="btnMenu" type="button" onclick="location.href='./departmentsList.jsp?currentPage=1'">departmentList</button>
-	<button id="btnMenu" type="button" onclick="location.href='./deptEmpList.jsp?currentPage=1'">deptEmpList</button>
-	<button id="btnMenu" type="button" onclick="location.href='./deptManagerList.jsp?currentPage=1'">deptManagerList</button>
-	<button id="btnMenu" type="button" onclick="location.href='./salariesList.jsp?currentPage=1'">salariesList</button>
-	<button id="btnMenu" type="button" onclick="location.href='./titlesList.jsp?currentPage=1'">titlesList</button>
-		
-	<h1>사원목록</h1>
-		<table border="1">
-			<thead>
+	<div class="container" style="background-color:white">
+		<!-- Top Menu -->
+		<div class="">
+			<div>
+				<nav class="navbar navbar-expand-sm bg-success navbar-dark">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">HOME</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link active" href="<%=request.getContextPath()%>/employeesList.jsp?currentPage=1">employeesList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/departmentsList.jsp?currentPage=1">departmentsList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/deptEmpList.jsp?currentPage=1">deptEmpList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/deptManagerList.jsp?currentPage=1">deptManagerList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/salariesList.jsp?currentPage=1">salariesList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/titlesList.jsp?currentPage=1">titlesList</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<!-- Page Content -->
+		<div class="container mt-3">
+			<h1>
+				<span class="badge badge-pill badge-success" style="background-color:#59DA50">
+					Employees List
+				</span>	
+			</h1>
+			<table class="table">
+			<thead style="background-color:#E0FFDB">
 				<tr>
 					<th>emp_no</th>
 					<th>birth_date</th>
@@ -203,125 +225,149 @@
 				</tr>
 			</thead>
 			<tbody>
-		<%
-			while(rs.next()){
-					String sYear = rs.getString("birth_date");
-		%>			
-				<tr>
-					<td><%=rs.getString("emp_no") %></td>
-					<td><%=sYear %></td>
-					<td><%=rs.getString("first_name") %></td>
-					<td><%=rs.getString("last_name") %></td>
-					<td>
-					<%
-						if(rs.getString("gender").equals("M")) out.print("남");
-						else out.print("여");
-					%>
-					</td>
-					<td><%=rs.getString("hire_date") %></td>
-				</tr>
-		<%
-			}
-		%>
-			</tbody>
-		</table>
-		<br />
-		
-		<!-- 페이징 버튼 -->
-		<div>
 			<%
-				if(currentPage > 1) {
-			%>
-				<a href="<%=address%>currentPage=1">처음으로</a>	
-				<a href="<%=address%>currentPage=<%=currentPage -1 %>">이전</a>
+				while(rs.next()){
+						String sYear = rs.getString("birth_date");
+			%>			
+					<tr>
+						<td><%=rs.getString("emp_no") %></td>
+						<td><%=sYear %></td>
+						<td><%=rs.getString("first_name") %></td>
+						<td><%=rs.getString("last_name") %></td>
+						<td>
+						<%
+							if(rs.getString("gender").equals("M")) out.print("남");
+							else out.print("여");
+						%>
+						</td>
+						<td><%=rs.getString("hire_date") %></td>
+					</tr>
 			<%
 				}
 			%>
-			<%
-				if(currentPage < cnt) {
-			%>
-				<a href="<%=address%>currentPage=<%=currentPage +1 %>">다음</a>
-				<a href="<%=address%>currentPage=<%=cnt %>">마지막으로</a>
-			<%
-				}
-			%>
+				</tbody>
+			</table>
+			<br />
 			
-		</div>
-		<br /><br />
+			<!-- 페이징 버튼 -->
+			<div>
+				<ul class="pagination">
+					<%
+						if(currentPage > 1) {
+					%>
+						<li class="page-item">
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%><%=address%>currentPage=1">처음으로</a>	
+						</li>
+						<li class="page-item">
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%><%=address%>currentPage=<%=currentPage -1 %>">이전</a>
+						</li>
+					<%
+						}
+					%>
+					<%
+						if(currentPage < cnt) {
+					%>
+						<li class="page-item">
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%><%=address%>currentPage=<%=currentPage +1 %>">다음</a>
+						</li>
+						<li class="page-item">
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%><%=address%>currentPage=<%=cnt %>">마지막으로</a>
+						</li>
+					<%
+						}
+					%>
+					
+				</ul>
+			</div>
 		
-		<!-- 검색 옵션 -->
-		<form method="post" action="./employeesList.jsp">
-			<div>
-				gender : 
-				<select name="searchGender">
-					<option value="선택안함"
-						<%
-							if(searchGender.equals("선택안함")){
-						%>
-							selected="selected"
-						<%
-							}
-						%>
-						>선택 안함</option>
-					<option value="M" 
-						<%
-							if(searchGender.equals("M")){
-						%>
-							selected="selected"
-						<%
-							}
-						%>
-					>남</option>
-					<option value="F"
-						<%
-							if(searchGender.equals("F")){
-						%>
-							selected="selected"
-						<%
-							}
-						%>
-						>여</option>
-				</select>
-			</div>
-			<div>
-				<select name="searchNameOption">
-					<option value="선택안함" 
-					<%
-						if(searchNameOption.equals("선택안함")){
-					%>
-						selected="selected"
-					<%
-						}
-					%>>=====선택 안함=====</option>
-					<option value="searchFirstName"
-					<%
-						if(searchNameOption.equals("searchFirstName")){
-					%>
-						selected="selected"
-					<%
-						}
-					%>>First Name</option>
-					<option value="searchLastName"
-					<%
-						if(searchNameOption.equals("searchLastName")){
-					%>
-						selected="selected"
-					<%
-						}
-					%>>Last Name</option>
-					<option value="searchFirstOrLast"
-					<%
-						if(searchNameOption.equals("searchFirstOrLast")){
-					%>
-						selected="selected"
-					<%
-						}
-					%>>First Name + Last Name</option>
-				</select>
-				<input type="text" name="searchName" value=<%=searchName %>>
-			</div>
-			<button type="submit">검색</button>
-		</form>
-		<!-- 살려줘 -->
+			<!-- 검색 옵션 -->
+			<form method="post" action="<%=request.getContextPath()%>/employeesList.jsp">
+				<div class="input-group"> 
+					<div class="input-group-prepend btn">
+						Gender : 
+					</div>
+					<div class="input-group-prepend">
+						<select name="searchGender" class="form-control">
+							<option value="선택안함"
+								<%
+									if(searchGender.equals("선택안함")){
+								%>
+									selected="selected"
+								<%
+									}
+								%>
+								>선택 안함</option>
+							<option value="M" 
+								<%
+									if(searchGender.equals("M")){
+								%>
+									selected="selected"
+								<%
+									}
+								%>
+							>남</option>
+							<option value="F"
+								<%
+									if(searchGender.equals("F")){
+								%>
+									selected="selected"
+								<%
+									}
+								%>
+								>여</option>
+						</select>
+					</div>
+					<div class="input-group-prepend btn">
+						Name : 
+					</div>
+					<div class="input-group-prepend">
+						<select name="searchNameOption" class="form-control">
+							<option value="선택안함" 
+							<%
+								if(searchNameOption.equals("선택안함")){
+							%>
+								selected="selected"
+							<%
+								}
+							%>>=====선택 안함=====</option>
+							<option value="searchFirstName"
+							<%
+								if(searchNameOption.equals("searchFirstName")){
+							%>
+								selected="selected"
+							<%
+								}
+							%>>First Name</option>
+							<option value="searchLastName"
+							<%
+								if(searchNameOption.equals("searchLastName")){
+							%>
+								selected="selected"
+							<%
+								}
+							%>>Last Name</option>
+							<option value="searchFirstOrLast"
+							<%
+								if(searchNameOption.equals("searchFirstOrLast")){
+							%>
+								selected="selected"
+							<%
+								}
+							%>>First Name + Last Name</option>
+						</select>
+					</div>
+					<div class="input-group-prepend" style="width:30%">
+						<input type="text" name="searchName" class="form-control" value=<%=searchName %>>
+					</div>
+					<div class="input-group-prepend">
+						<button type="submit" class="btn btn-outline-success" style="width:100px">검색</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- footer -->
+		<div class="navbar navbar-expand-sm bg-success mt-5" style="height:50px">
+		</div>
+	</div>
 </body>
 </html>

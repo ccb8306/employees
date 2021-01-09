@@ -6,16 +6,10 @@
 <head>
 <meta charset="utf-8">
 <title>departments 테이블 목록</title>
-<style>
-	#btnMenu{
-		padding:10px 20px;
-		background-color:white; font-size:20px;
-		}
-	#btnPage{
-		padding:7px 10px;
-		 font-size:20px;
-	}
-</style>
+<!-- boot strap 4 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
 </head>
 <body>
 	<!-- 내용 -->
@@ -65,7 +59,7 @@
 				sql2 = "SELECT count(*) as cnt FROM departments where dept_name = ?";
 				stmt2 = conn.prepareStatement(sql2);
 				stmt2.setString(1, searchDept);
-				address = "./departmentsList.jsp?searchDept=" + searchDept + "&";
+				address = "/departmentsList.jsp?searchDept=" + searchDept + "&";
 				
 			}else{
 				sql = "SELECT dept_no,dept_name FROM departments ORDER BY dept_no desc LIMIT ?,?";
@@ -74,7 +68,7 @@
 				stmt.setInt(2, rowPage);
 				sql2 = "SELECT count(*) as cnt FROM departments";
 				stmt2 = conn.prepareStatement(sql2);
-				address = "./departmentsList.jsp?";
+				address = "/departmentsList.jsp?";
 			}
 			// 4. 쿼리문 결과 저장
 			ResultSet rs = stmt.executeQuery();
@@ -90,66 +84,115 @@
 			}
 			
 			%>
-		<!-- 메뉴 -->
-		<button id="btnMenu" type="button" onclick="location.href='./index.jsp'">HOME</button>
-		<button id="btnMenu" type="button" onclick="location.href='./employeesList.jsp?currentPage=1'">employeesList</button>
-		<button id="btnMenu" type="button" onclick="location.href='./departmentsList.jsp?currentPage=1'">departmentList</button>
-		<button id="btnMenu" type="button" onclick="location.href='./deptEmpList.jsp?currentPage=1'">deptEmpList</button>
-		<button id="btnMenu" type="button" onclick="location.href='./deptManagerList.jsp?currentPage=1'">deptManagerList</button>
-		<button id="btnMenu" type="button" onclick="location.href='./salariesList.jsp?currentPage=1'">salariesList</button>
-		<button id="btnMenu" type="button" onclick="location.href='./titlesList.jsp?currentPage=1'">titlesList</button>
-		
-		<h1>departments 테이블 목록</h1>
-		<table border="1">
-			<thead>
-				<tr>
-					<th>dept_no</th>
-					<th>dept_name</th>
-				</tr>
-			</thead>
-			<tbody>
-		<%
-			while(rs.next()){
-		%>
-				<tr>
-					<td><%=rs.getString("dept_no") %></td>
-					<td><%=rs.getString("dept_name") %></td>
-				</tr>
-		<%
-			}
-		%>
-			</tbody>
-		</table>
-	</div>
-	<!-- 페이징 버튼 -->
-	<div>
-		<%
-			if(currentPage > 1) {
-		%>
-			<a href="<%=address%>currentPage=1">처음으로</a>	
-			<a href="<%=address%>currentPage=<%=currentPage -1 %>">이전</a>
-		<%
-			}
-		%>
-		<%
-			if(currentPage < cnt) {
-		%>
-			<a href="<%=address%>currentPage=<%=currentPage +1 %>">다음</a>
-			<a href="<%=address%>currentPage=<%=cnt %>">마지막으로</a>
-		<%
-			}
-		%>
-		
-	</div>
-	<br /><br />
-	<!-- 검색 -->
-	<div>
-		<form method="post" action="./departmentsList.jsp">
+	<div class="container" style="background-color:white">
+		<!-- Top Menu -->
+		<div class="">
 			<div>
-				부서 이름 검색 : <input type="text" name="searchDept" value=<%=searchDept %>>
+				<nav class="navbar navbar-expand-sm bg-success navbar-dark">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">HOME</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/employeesList.jsp?currentPage=1">employeesList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link active" href="<%=request.getContextPath()%>/departmentsList.jsp?currentPage=1">departmentsList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/deptEmpList.jsp?currentPage=1">deptEmpList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/deptManagerList.jsp?currentPage=1">deptManagerList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/salariesList.jsp?currentPage=1">salariesList</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath()%>/titlesList.jsp?currentPage=1">titlesList</a>
+						</li>
+					</ul>
+				</nav>
 			</div>
-			<button type="submit">검색</button>
-		</form>
+		</div>
+		<!-- Page Content -->
+		<div class="container mt-3">
+			<h1>
+				<span class="badge badge-pill badge-success" style="background-color:#59DA50">
+					Departments List 
+				</span>	
+			</h1>
+			<table class="table">
+				<thead style="background-color:#E0FFDB">
+					<tr>
+						<th>dept_no</th>
+						<th>dept_name</th>
+					</tr>
+				</thead>
+				<tbody>
+				<%
+					while(rs.next()){
+				%>
+						<tr>
+							<td><%=rs.getString("dept_no") %></td>
+							<td><%=rs.getString("dept_name") %></td>
+						</tr>
+				<%
+					}
+				%>
+				</tbody>
+			</table>
+			<br />
+			
+			<!-- 페이징 버튼 -->
+			<div>
+				<ul class="pagination">
+					<%
+						if(currentPage > 1) {
+					%>
+						<li class="page-item">
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%><%=address%>currentPage=1">처음으로</a>
+						</li>
+						<li class="page-item">
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%><%=address%>currentPage=<%=currentPage -1 %>">이전</a>
+						</li>
+					<%
+						}
+					%>
+					<%
+						if(currentPage < cnt) {
+					%>
+						<li class="page-item">
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%><%=address%>currentPage=<%=currentPage +1 %>">다음</a>
+						</li>
+						<li class="page-item">
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%><%=address%>currentPage=<%=cnt %>">마지막으로</a>
+						</li>
+					<%
+						}
+					%>
+					
+				</ul>
+			</div>
+		
+			<!-- 검색 옵션 -->
+			<form method="post" action="<%=request.getContextPath()%>/departmentsList.jsp">
+				<div class="input-group"> 
+					<div class="input-group-prepend btn">
+						부서 이름 검색 : 
+					</div>
+					<div class="input-group-prepend">
+						<input class="form-control" type="text" name="searchDept" value=<%=searchDept %>>
+					</div>
+					<div class="input-group-prepend">
+						<button type="submit" class="btn btn-outline-success">검색</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- footer -->
+		<div class="navbar navbar-expand-sm bg-success mt-5" style="height:50px">
+		</div>
 	</div>
 </body>
 </html>
