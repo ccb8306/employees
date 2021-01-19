@@ -14,7 +14,6 @@
 <body>
 	
 	<!-- 내용 -->
-	<div>
 		<%
 			request.setCharacterEncoding("utf-8");
 			boolean deptOption = false;

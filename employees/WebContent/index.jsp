@@ -43,9 +43,17 @@
 				</nav>
 			</div>
 		</div>
-		<!-- Page Content --
+		<!-- Page Content -->
 		<div class="container mt-3">
-			<h1>Employees</h1>
+			<div style="position: relative;">
+				<div>
+					<img src="<%=request.getContextPath()%>/image/main.png" alt="" height="700px">
+				</div>
+				<div style="left: 50%; bottom: 25%; position: absolute; transform: translate( -50%, -50% ); text-align: center">
+					<h3 style="color:buttonshadow;">제작자 : 조성현</h3>
+					<h4 style="color: threedface;">JSP 첫 프로젝트</h4>
+				</div>
+			</div>
 		</div>
 		<!-- footer -->
 		<div class="navbar navbar-expand-sm bg-success mt-5" style="height:50px">

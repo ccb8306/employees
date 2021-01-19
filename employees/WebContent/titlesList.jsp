@@ -150,10 +150,10 @@
 						if(currentPage < cnt) {
 					%>
 						<li class="page-item">
-							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%>/titlesList.jsp.jsp?currentPage=<%=currentPage +1 %>">다음</a>
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%>/titlesList.jsp?currentPage=<%=currentPage +1 %>">다음</a>
 						</li>
 						<li class="page-item">
-							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%>/titlesList.jsp.jsp?currentPage=<%=cnt %>">마지막으로</a>
+							<a style="color:#53C14B; font-weight: bold;" class="page-link" href="<%=request.getContextPath()%>/titlesList.jsp?currentPage=<%=cnt %>">마지막으로</a>
 						</li>
 					<%
 						}
